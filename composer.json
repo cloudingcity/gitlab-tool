@@ -20,6 +20,7 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3",
         "laravel-zero/framework": "5.8.*",
+        "padraic/phar-updater": "^1.0.6",
         "zendframework/zend-text": "^2.7"
     },
     "require-dev": {
