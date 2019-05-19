@@ -1,5 +1,5 @@
 {
-    "name": "laravel-zero/laravel-zero",
+    "name": "clouding/tool",
     "description": "The Laravel Zero Framework.",
     "keywords": ["framework", "laravel", "laravel zero", "console", "cli"],
     "homepage": "https://laravel-zero.com",
@@ -11,8 +11,8 @@
     },
     "authors": [
         {
-            "name": "Nuno Maduro",
-            "email": "enunomaduro@gmail.com"
+            "name": "Clouding",
+            "email": "ghost0435@gmail.com"
         }
     ],
     "require": {
