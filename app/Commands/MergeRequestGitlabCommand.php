@@ -10,7 +10,7 @@ class MergeRequestGitlabCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'gitlab:merge-request
+    protected $signature = 'gitlab:mr
                             {--state=opened : Can be opened, closed, locked, or merged.}';
 
     /**
