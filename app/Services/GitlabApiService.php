@@ -22,23 +22,32 @@ class GitlabApiService
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchMergeRequests(string $state) : array
+    public function fetchMergeRequests(string $state): array
     {
-        $response = $this->client->request(
-            'GET',
-            $this->getEndpoint('merge_requests'),
-            ['query' => ['state' => $state]]
-        );
+        return $this->sendRequest('GET', 'merge_requests', ['query' => ['state' => $state]]);
+    }
+
+    /**
+     * @param string $method
+     * @param string $endpoint
+     * @param array  $options
+     * @return mixed
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function sendRequest(string $method, string $endpoint, array $options = [])
+    {
+        $response = $this->client->request($method, $this->getApiEndpoint($endpoint), $options);
 
         return json_decode((string) $response->getBody());
     }
 
     /**
-     * @param string $path
+     * @param string $endpoint
      * @return string
      */
-    protected function getEndpoint(string $path)
+    protected function getApiEndpoint(string $endpoint)
     {
-        return 'api/v4/' . $path;
+        return 'api/v4/' . $endpoint;
     }
 }
