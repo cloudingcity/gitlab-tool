@@ -1,5 +1,10 @@
 # Clouding Tool
 
+[![](https://img.shields.io/packagist/php-v/clouding/tool.svg?style=flat-square)](https://packagist.org/packages/clouding/tool)
+[![](https://img.shields.io/github/release/cloudingcity/tool.svg?style=flat-square)](https://packagist.org/packages/clouding/tool)
+[![](https://img.shields.io/travis/com/cloudingcity/tool.svg?style=flat-square)](https://travis-ci.com/cloudingcity/tool)
+[![](https://img.shields.io/codecov/c/github/cloudingcity/tool.svg?style=flat-square)](https://codecov.io/gh/cloudingcity/tool)
+
 ```
   _____ _                 _ _
  / ____| |               | (_)
