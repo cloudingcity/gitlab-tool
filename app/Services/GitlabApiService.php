@@ -33,9 +33,12 @@ class GitlabApiService
      */
     protected $client;
 
-    public function __construct()
+    /**
+     * @param \GuzzleHttp\Client|null $client
+     */
+    public function __construct(Client $client = null)
     {
-        $this->client = new Client([
+        $this->client = $client ?: new Client([
             'base_uri' => config('gitlab.uri'),
             'headers' => ['PRIVATE-TOKEN' => config('gitlab.token')]
         ]);
