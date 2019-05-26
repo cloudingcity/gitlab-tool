@@ -4,49 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
-
 class GitlabApiService
 {
     /**
-     * @var string
-     */
-    const MERGE_REQUEST_STATE_OPENED = 'opened';
-
-    /**
-     * @var string
-     */
-    const MERGE_REQUEST_STATE_CLOSED = 'closed';
-
-    /**
-     * @var string
-     */
-    const MERGE_REQUEST_STATE_LOCKED = 'locked';
-
-    /**
-     * @var string
-     */
-    const MERGE_REQUEST_STATE_MERGED = 'merged';
-
-    /*
-     * @var \Guzzle\client
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
-    /**
-     * @param \GuzzleHttp\Client|null $client
-     */
-    public function __construct(Client $client = null)
+    public function __construct()
     {
-        $this->client = $client ?: new Client([
-            'base_uri' => config('gitlab.uri'),
-            'headers' => ['PRIVATE-TOKEN' => config('gitlab.token')]
-        ]);
+        $this->client = app('gitlab.client');
     }
 
     /**
-     * Fetch merge requests.
-     *
      * @param string $state
      * @return array
      *
@@ -56,10 +26,19 @@ class GitlabApiService
     {
         $response = $this->client->request(
             'GET',
-            'merge_requests',
-            ['query' => ['author_id' => config('gitlab.author_id'), 'state' => $state]]
+            $this->getEndpoint('merge_requests'),
+            ['query' => ['state' => $state]]
         );
 
         return json_decode((string) $response->getBody());
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    protected function getEndpoint(string $path)
+    {
+        return 'api/v4/' . $path;
     }
 }

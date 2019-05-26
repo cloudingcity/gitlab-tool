@@ -14,7 +14,7 @@ class GitlabMergeRequestCommandTest extends TestCase
         $service = m::mock(GitlabApiService::class);
         $service->shouldReceive('fetchMergeRequests')
             ->once()
-            ->with(GitlabApiService::MERGE_REQUEST_STATE_OPENED)
+            ->with('opened')
             ->andReturn([
                 (object) ['web_url' => 'https://example.com/foo/bar', 'source_branch' => 'baz']
             ]);

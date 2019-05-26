@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'uri' => env('GITLAB_API_URI'),
+    'uri' => env('GITLAB_URI'),
     'token' => env('GITLAB_ACCESS_TOKEN'),
-    'author_id' => env('GITLAB_AUTHOR_ID'),
 ];

@@ -3,3 +3,4 @@
 /.vscode
 /.vagrant
 .env
+/phpunit.xml
