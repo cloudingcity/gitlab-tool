@@ -28,6 +28,17 @@ class GitlabApiService
     }
 
     /**
+     * @param string $content
+     * @return object
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function lintCi(string $content)
+    {
+        return $this->sendRequest('POST', 'ci/lint', ['form_params' => ['content' => $content]]);
+    }
+
+    /**
      * @param string $method
      * @param string $endpoint
      * @param array  $options
