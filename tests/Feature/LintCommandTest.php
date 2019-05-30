@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Services\GitlabApiService;
+use App\Services\ApiService;
 use Mockery as m;
 use Tests\TestCase;
 
-class GitlabLintCommandTest extends TestCase
+class LintCommandTest extends TestCase
 {
     public function testFileNotFound()
     {
-        $this->artisan('gitlab:lint', ['file' => 'foo'])
+        $this->artisan('lint', ['file' => 'foo'])
             ->assertExitCode(0);
     }
 
@@ -19,7 +19,7 @@ class GitlabLintCommandTest extends TestCase
     {
         $this->mockService(['status' => 'invalid', 'errors' => ['foo', 'bar']]);
 
-        $this->artisan('gitlab:lint', ['file' => base_path('README.md')])
+        $this->artisan('lint', ['file' => base_path('README.md')])
             ->assertExitCode(0);
     }
 
@@ -27,16 +27,16 @@ class GitlabLintCommandTest extends TestCase
     {
         $this->mockService(['status' => 'valid']);
 
-        $this->artisan('gitlab:lint', ['file' => base_path('README.md')])
+        $this->artisan('lint', ['file' => base_path('README.md')])
             ->assertExitCode(0);
     }
 
     protected function mockService(array $responses)
     {
-        $service = m::mock(GitlabApiService::class);
+        $service = m::mock(ApiService::class);
         $service->shouldReceive('lintCi')
             ->once()
             ->andReturn((object) $responses);
-        $this->app->instance(GitlabApiService::class, $service);
+        $this->app->instance(ApiService::class, $service);
     }
 }

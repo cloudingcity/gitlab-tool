@@ -2,15 +2,15 @@
 
 namespace App\Commands;
 
-use App\Services\GitlabApiService;
+use App\Services\ApiService;
 use LaravelZero\Framework\Commands\Command;
 
-class MergeRequestGitlabCommand extends Command
+class MergeRequestCommand extends Command
 {
     /**
      * @var string
      */
-    protected $signature = 'gitlab:mr
+    protected $signature = 'mr
                             {--state=opened : Can be opened, closed, locked, or merged.}';
 
     /**
@@ -19,11 +19,11 @@ class MergeRequestGitlabCommand extends Command
     protected $description = 'List merge requests.';
 
     /**
-     * @param \App\Services\GitlabApiService $gitlab
+     * @param \App\Services\ApiService $gitlab
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle(GitlabApiService $gitlab)
+    public function handle(ApiService $gitlab)
     {
         $this->renderTable(
             $gitlab->fetchMergeRequests($this->option('state'))

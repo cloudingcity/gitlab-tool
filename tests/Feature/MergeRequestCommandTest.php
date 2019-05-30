@@ -3,24 +3,24 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Services\GitlabApiService;
+use App\Services\ApiService;
 use Mockery as m;
 use Tests\TestCase;
 
-class GitlabMergeRequestCommandTest extends TestCase
+class MergeRequestCommandTest extends TestCase
 {
     public function testMRCommand()
     {
-        $service = m::mock(GitlabApiService::class);
+        $service = m::mock(ApiService::class);
         $service->shouldReceive('fetchMergeRequests')
             ->once()
             ->with('opened')
             ->andReturn([
                 (object) ['web_url' => 'https://example.com/foo/bar', 'source_branch' => 'baz']
             ]);
-        $this->app->instance(GitlabApiService::class, $service);
+        $this->app->instance(ApiService::class, $service);
 
-        $this->artisan('gitlab:mr')
+        $this->artisan('mr')
             ->assertExitCode(0);
     }
 }

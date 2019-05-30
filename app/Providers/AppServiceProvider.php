@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('gitlab.client', function () {
+        $this->app->singleton(Client::class, function () {
             return new Client([
                 'base_uri' => config('gitlab.uri'),
                 'headers' => ['PRIVATE-TOKEN' => config('gitlab.token')],

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-class GitlabApiService
+use GuzzleHttp\Client;
+
+class ApiService
 {
     /**
      * @var \GuzzleHttp\Client
      */
     protected $client;
 
-    public function __construct()
+    public function __construct(Client $client)
     {
-        $this->client = app('gitlab.client');
+        $this->client = $client;
     }
 
     /**

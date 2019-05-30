@@ -2,15 +2,15 @@
 
 namespace App\Commands;
 
-use App\Services\GitlabApiService;
+use App\Services\ApiService;
 use LaravelZero\Framework\Commands\Command;
 
-class LintGitlabCommand extends Command
+class LintCommand extends Command
 {
     /**
      * @var string
      */
-    protected $signature = 'gitlab:lint
+    protected $signature = 'lint
                             {file : The .gitlab-ci.yml file.}';
 
     /**
@@ -19,11 +19,11 @@ class LintGitlabCommand extends Command
     protected $description = 'Checks if your .gitlab-ci.yml file is valid.';
 
     /**
-     * @param \App\Services\GitlabApiService $service
+     * @param \App\Services\ApiService $service
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle(GitlabApiService $service)
+    public function handle(ApiService $service)
     {
         if (!$this->validate()) {
             return;
