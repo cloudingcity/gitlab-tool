@@ -11,8 +11,9 @@
 
 1. Download to your `$PATH` directory
 ```bash
-curl -O https://raw.githubusercontent.com/cloudingcity/gitlab-tool/master/builds/clouding
+curl -O https://raw.githubusercontent.com/cloudingcity/gitlab-tool/master/builds/gitlab-tool
 curl -O https://raw.githubusercontent.com/cloudingcity/gitlab-tool/master/.env.example
+chmod +x gitlab-tool
 ```
 
 2. Configure environment file
