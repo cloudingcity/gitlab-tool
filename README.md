@@ -1,53 +1,18 @@
-# Clouding Tool
+# Gitlab Tool
 
-[![](https://img.shields.io/packagist/php-v/clouding/tool.svg?style=flat-square)](https://packagist.org/packages/clouding/tool)
-[![](https://img.shields.io/github/release/cloudingcity/tool.svg?style=flat-square)](https://packagist.org/packages/clouding/tool)
-[![](https://img.shields.io/travis/com/cloudingcity/tool.svg?style=flat-square)](https://travis-ci.com/cloudingcity/tool)
-[![](https://img.shields.io/codecov/c/github/cloudingcity/tool.svg?style=flat-square)](https://codecov.io/gh/cloudingcity/tool)
-
-```
-  _____ _                 _ _
- / ____| |               | (_)
-| |    | | ___  _   _  __| |_ _ __   __ _
-| |    | |/ _ \| | | |/ _` | | '_ \ / _` |
-| |____| | (_) | |_| | (_| | | | | | (_| |
- \_____|_|\___/ \__,_|\__,_|_|_| |_|\__, |
-                                     __/ |
-                                    |___/
-```
+[![](https://img.shields.io/packagist/php-v/clouding/gitlab-tool.svg?style=flat-square)](https://packagist.org/packages/clouding/gitlab-tool)
+[![](https://img.shields.io/github/release/cloudingcity/gitlab-tool.svg?style=flat-square)](https://packagist.org/packages/clouding/gitlab-tool)
+[![](https://img.shields.io/travis/com/cloudingcity/gitlab-tool.svg?style=flat-square)](https://travis-ci.com/cloudingcity/gitlab-tool)
+[![](https://img.shields.io/codecov/c/github/cloudingcity/gitlab-tool.svg?style=flat-square)](https://codecov.io/gh/cloudingcity/gitlab-tool)
 
 > Built with [Laravel Zero](https://github.com/laravel-zero/laravel-zero)
-
-## Installation
-
-1. Clone repository
-```bash
-git clone git@github.com:cloudingcity/tool.git
-cd tool
-```
-
-2. Install dependencies via Composer
-```bash
-composer install
-```
-
-3. Configure environment file
-```bash
-cp .env.example .env
-vim .env
-```
-
-4. Execute console
-```bash
-php clouding
-```
 
 ## Download phar
 
 1. Download to your `$PATH` directory
 ```bash
-curl -O https://raw.githubusercontent.com/cloudingcity/tool/master/builds/clouding
-curl -O https://raw.githubusercontent.com/cloudingcity/tool/master/.env.example
+curl -O https://raw.githubusercontent.com/cloudingcity/gitlab-tool/master/builds/clouding
+curl -O https://raw.githubusercontent.com/cloudingcity/gitlab-tool/master/.env.example
 ```
 
 2. Configure environment file
@@ -58,11 +23,18 @@ vim .env
 
 3. Execute console
 ```
-clouding
+gitlab-tool
 ```
 
-### Self update
+## Self update
+Update gitlab-tool to latest version
 ```
-clouding self-update
+gitlab-tool self-update
 ```
 
+## Environment
+
+Key | Description
+--- | ---
+GITLAB_URI | Gitlab base uri
+GITLAB_ACCESS_TOKEN | [Personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
