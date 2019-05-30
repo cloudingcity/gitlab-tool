@@ -37,5 +37,5 @@ gitlab-tool self-update
 
 Key | Description
 --- | ---
-GITLAB_URI | Gitlab base uri
-GITLAB_ACCESS_TOKEN | [Personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+BASE_URI | Gitlab base uri
+ACCESS_TOKEN | [Personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
