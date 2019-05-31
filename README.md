@@ -19,18 +19,18 @@ chmod +x gitlab-tool
 2. Configure environment file
 ```bash
 cp .env.example .env
-vim .env
+vi .env
 ```
 
 3. Execute console
 ```
-gitlab-tool
+./gitlab-tool
 ```
 
 ## Self update
 Update gitlab-tool to latest version
 ```
-gitlab-tool self-update
+./gitlab-tool self-update
 ```
 
 ## Environment
