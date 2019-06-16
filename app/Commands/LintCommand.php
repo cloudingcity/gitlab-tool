@@ -20,6 +20,7 @@ class LintCommand extends Command
 
     /**
      * @param \App\Services\ApiService $service
+     * @return void
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -52,6 +53,7 @@ class LintCommand extends Command
 
     /**
      * @param object $response
+     * @return void
      */
     protected function checkLint(object $response)
     {

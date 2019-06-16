@@ -20,6 +20,7 @@ class MergeRequestCommand extends Command
 
     /**
      * @param \App\Services\ApiService $gitlab
+     * @return void
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -32,6 +33,7 @@ class MergeRequestCommand extends Command
 
     /**
      * @param array $items
+     * @return void
      */
     protected function renderTable(array $items)
     {

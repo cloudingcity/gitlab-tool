@@ -13,6 +13,10 @@ class ApiService
      */
     protected $client;
 
+    /**
+     * @param \GuzzleHttp\Client $client
+     * @return void
+     */
     public function __construct(Client $client)
     {
         $this->client = $client;
