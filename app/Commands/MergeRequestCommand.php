@@ -41,7 +41,7 @@ class MergeRequestCommand extends Command
             [, , , $vendor, $repository] = explode('/', $item->web_url);
 
             $this->table(
-                [$vendor, $repository],
+                ['Project', $vendor . '/' . $repository],
                 [
                     ['Branch', $item->source_branch],
                     ['Assignee', $item->assignee->name ?? null],
