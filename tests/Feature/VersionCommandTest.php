@@ -13,7 +13,6 @@ class VersionCommandTest extends TestCase
     {
         $service = m::mock(GitLabApiService::class);
         $service->shouldReceive('fetchVersion')->andReturn((object) ['version' => 123])->once();
-
         $this->app->instance(GitLabApiService::class, $service);
 
         $this->artisan('version')

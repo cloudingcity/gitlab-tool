@@ -15,10 +15,9 @@ class GitLabApiServiceTest extends TestCase
 
     public function testFetchMergeRequests()
     {
-        $response = [1, 2, 3];
         $state = 'pikachu';
 
-        $this->guzzler->queueResponse(new Response(200, [], json_encode($response)));
+        $this->guzzler->queueResponse(new Response(200, [], json_encode([1, 2, 3])));
         $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
 
         $service = new GitLabApiService($client);
@@ -28,14 +27,14 @@ class GitLabApiServiceTest extends TestCase
             ->get('http://foo/api/v4/merge_requests')
             ->withQuery(['state' => $state]);
 
-        $this->assertSame($mergeRequests, $response);
+        $this->assertSame($mergeRequests, [1, 2, 3]);
     }
 
     public function testLintCi()
     {
         $content = 'pikachu';
 
-        $this->guzzler->queueResponse(new Response());
+        $this->guzzler->queueResponse(new Response(200, [], json_encode(['foo' => 'bar'])));
         $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
 
         $service = new GitLabApiService($client);
@@ -48,7 +47,7 @@ class GitLabApiServiceTest extends TestCase
 
     public function testFetchVersion()
     {
-        $this->guzzler->queueResponse(new Response());
+        $this->guzzler->queueResponse(new Response(200, [], json_encode(['foo' => 'bar'])));
         $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
 
         $service = new GitLabApiService($client);

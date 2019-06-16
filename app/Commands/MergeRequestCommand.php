@@ -26,7 +26,7 @@ class MergeRequestCommand extends Command
      */
     public function handle(GitLabApiService $gitlab)
     {
-        $this->renderTable(
+        $this->render(
             $gitlab->fetchMergeRequests($this->option('state'))
         );
     }
@@ -35,7 +35,7 @@ class MergeRequestCommand extends Command
      * @param array $items
      * @return void
      */
-    protected function renderTable(array $items)
+    protected function render(array $items)
     {
         foreach ($items as $item) {
             [, , , $vendor, $repository] = explode('/', $item->web_url);

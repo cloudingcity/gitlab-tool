@@ -30,7 +30,7 @@ class GitLabApiService
      */
     public function fetchMergeRequests(string $state): array
     {
-        return $this->sendRequest('GET', 'merge_requests', ['query' => ['state' => $state]]);
+        return $this->request('GET', 'merge_requests', ['query' => ['state' => $state]]);
     }
 
     /**
@@ -39,9 +39,9 @@ class GitLabApiService
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function lintCi(string $content)
+    public function lintCi(string $content): object
     {
-        return $this->sendRequest('POST', 'ci/lint', ['form_params' => ['content' => $content]]);
+        return $this->request('POST', 'ci/lint', ['form_params' => ['content' => $content]]);
     }
 
     /**
@@ -49,9 +49,9 @@ class GitLabApiService
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchVersion()
+    public function fetchVersion(): object
     {
-        return $this->sendRequest('GET', 'version');
+        return $this->request('GET', 'version');
     }
 
     /**
@@ -62,7 +62,7 @@ class GitLabApiService
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function sendRequest(string $method, string $endpoint, array $options = [])
+    protected function request(string $method, string $endpoint, array $options = [])
     {
         $response = $this->client->request($method, $this->getApiEndpoint($endpoint), $options);
 
