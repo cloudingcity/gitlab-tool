@@ -24,18 +24,50 @@ vi .env
 
 3. Execute console
 ```
-./gitlab-tool
+gitlab-tool
 ```
 
-## Self update
-Update gitlab-tool to latest version
-```
-./gitlab-tool self-update
-```
-
-## Environment
+## Environments
 
 Key | Description
 --- | ---
 BASE_URI | Gitlab base uri
 ACCESS_TOKEN | [Personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+
+## Commands
+
+### self-update
+
+Update gitlab-tool to latest version
+```
+gitlab-tool self-update
+```
+
+### lint
+
+Checks if your .gitlab-ci.yml file is valid.
+```
+gitlab-tool lint <file>
+```
+
+### mr
+
+List merge requests.
+```
+gitlab-tool mr --state=[=STATE]
+```
+
+### version
+
+Show version information
+```
+gitlab-tool version
+```
+
+### search:projects
+
+Search projects
+```
+gitlab-tool search:projects <search> --group[=GROUP]
+```
+
