@@ -19,15 +19,15 @@ class MergeRequestCommand extends Command
     protected $description = 'List merge requests.';
 
     /**
-     * @param \App\Services\GitLabApiService $gitlab
+     * @param \App\Services\GitLabApiService $service
      * @return void
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle(GitLabApiService $gitlab)
+    public function handle(GitLabApiService $service)
     {
         $this->render(
-            $gitlab->fetchMergeRequests($this->option('state'))
+            $service->fetchMergeRequests($this->option('state'))
         );
     }
 
