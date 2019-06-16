@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use App\Services\ApiService;
+use App\Services\GitLabApiService;
 use LaravelZero\Framework\Commands\Command;
 
 class VersionCommand extends Command
@@ -18,12 +18,12 @@ class VersionCommand extends Command
     protected $description = 'Retrieve version information for this GitLab instance';
 
     /**
-     * @param \App\Services\ApiService $service
+     * @param \App\Services\GitLabApiService $service
      * @return void
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle(ApiService $service)
+    public function handle(GitLabApiService $service)
     {
         $this->table(
             ['Uri', config('gitlab.uri')],

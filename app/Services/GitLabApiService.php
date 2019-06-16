@@ -6,7 +6,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 
-class ApiService
+class GitLabApiService
 {
     /**
      * @var \GuzzleHttp\Client

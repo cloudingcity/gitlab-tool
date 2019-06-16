@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Services\ApiService;
+use App\Services\GitLabApiService;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -33,10 +33,10 @@ class LintCommandTest extends TestCase
 
     protected function mockService(array $responses)
     {
-        $service = m::mock(ApiService::class);
+        $service = m::mock(GitLabApiService::class);
         $service->shouldReceive('lintCi')
             ->once()
             ->andReturn((object) $responses);
-        $this->app->instance(ApiService::class, $service);
+        $this->app->instance(GitLabApiService::class, $service);
     }
 }

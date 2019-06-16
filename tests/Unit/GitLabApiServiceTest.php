@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Services\ApiService;
+use App\Services\GitLabApiService;
 use BlastCloud\Guzzler\UsesGuzzler;
 use GuzzleHttp\Psr7\Response;
 use Tests\TestCase;
 
-class ApiServiceTest extends TestCase
+class GitLabApiServiceTest extends TestCase
 {
     use UsesGuzzler;
 
@@ -21,7 +21,7 @@ class ApiServiceTest extends TestCase
         $this->guzzler->queueResponse(new Response(200, [], json_encode($response)));
         $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
 
-        $service = new ApiService($client);
+        $service = new GitLabApiService($client);
         $mergeRequests = $service->fetchMergeRequests($state);
 
         $this->guzzler->expects($this->once())
@@ -38,7 +38,7 @@ class ApiServiceTest extends TestCase
         $this->guzzler->queueResponse(new Response());
         $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
 
-        $service = new ApiService($client);
+        $service = new GitLabApiService($client);
         $service->lintCi($content);
 
         $this->guzzler->expects($this->once())
@@ -51,7 +51,7 @@ class ApiServiceTest extends TestCase
         $this->guzzler->queueResponse(new Response());
         $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
 
-        $service = new ApiService($client);
+        $service = new GitLabApiService($client);
         $service->fetchVersion();
 
         $this->guzzler->expects($this->once())
