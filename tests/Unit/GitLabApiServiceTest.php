@@ -56,4 +56,30 @@ class GitLabApiServiceTest extends TestCase
         $this->guzzler->expects($this->once())
             ->get('http://foo/api/v4/version');
     }
+
+    public function testSearchProjects()
+    {
+        $this->guzzler->queueResponse(new Response(200, [], json_encode([])));
+        $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
+
+        $service = new GitLabApiService($client);
+        $service->searchProjects('foo');
+
+        $this->guzzler->expects($this->once())
+            ->get('http://foo/api/v4/search')
+            ->withQuery(['scope' => 'projects', 'search' => 'foo']);
+    }
+
+    public function testSearchProjectsWithGroup()
+    {
+        $this->guzzler->queueResponse(new Response(200, [], json_encode([])));
+        $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
+
+        $service = new GitLabApiService($client);
+        $service->searchProjects('foo', 'bar');
+
+        $this->guzzler->expects($this->once())
+            ->get('http://foo/api/v4/groups/bar/search')
+            ->withQuery(['scope' => 'projects', 'search' => 'foo']);
+    }
 }
