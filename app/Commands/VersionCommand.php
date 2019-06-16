@@ -15,7 +15,7 @@ class VersionCommand extends Command
     /**
      * @var string
      */
-    protected $description = 'Retrieve version information for this GitLab instance';
+    protected $description = 'Show version information';
 
     /**
      * @param \App\Services\GitLabApiService $service
