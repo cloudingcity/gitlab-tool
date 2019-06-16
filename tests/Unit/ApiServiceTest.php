@@ -45,4 +45,16 @@ class ApiServiceTest extends TestCase
             ->post('http://foo/api/v4/ci/lint')
             ->withBody($content);
     }
+
+    public function testFetchVersion()
+    {
+        $this->guzzler->queueResponse(new Response());
+        $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
+
+        $service = new ApiService($client);
+        $service->fetchVersion();
+
+        $this->guzzler->expects($this->once())
+            ->get('http://foo/api/v4/version');
+    }
 }

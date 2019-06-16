@@ -41,6 +41,16 @@ class ApiService
     }
 
     /**
+     * @return object
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function fetchVersion()
+    {
+        return $this->sendRequest('GET', 'version');
+    }
+
+    /**
      * @param string $method
      * @param string $endpoint
      * @param array  $options
