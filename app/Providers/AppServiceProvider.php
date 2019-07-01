@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,8 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Client::class, function () {
-            return new Client([
+        $this->app->singleton(GuzzleClient::class, function () {
+            return new GuzzleClient([
                 'base_uri' => config('gitlab.uri'),
                 'headers' => ['PRIVATE-TOKEN' => config('gitlab.token')],
                 RequestOptions::TIMEOUT => 6,
