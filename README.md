@@ -45,7 +45,7 @@ gitlab-tool self-update
 
 ### lint
 
-Checks if your .gitlab-ci.yml file is valid.
+Checks if your .gitlab-ci.yml file is valid
 ```
 gitlab-tool lint <file>
 ```
