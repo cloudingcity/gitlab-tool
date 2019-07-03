@@ -30,20 +30,6 @@ class GitLabApiServiceTest extends TestCase
         $this->assertSame($mergeRequests, [1, 2, 3]);
     }
 
-    public function testLintCi()
-    {
-        $content = 'pikachu';
-
-        $this->guzzler->queueResponse(new Response(200, [], json_encode(['foo' => 'bar'])));
-        $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
-
-        $service = new GitLabApiService($client);
-        $service->lintCi($content);
-
-        $this->guzzler->expects($this->once())
-            ->post('http://foo/api/v4/ci/lint')
-            ->withBody($content);
-    }
     public function testSearchProjects()
     {
         $this->guzzler->queueResponse(new Response(200, [], json_encode([])));

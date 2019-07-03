@@ -2,7 +2,8 @@
 
 namespace App\Commands;
 
-use App\Services\GitLabApiService;
+use App\Apis\Client;
+use App\Apis\Standalone\Lint;
 use LaravelZero\Framework\Commands\Command;
 
 class LintCommand extends Command
@@ -16,32 +17,31 @@ class LintCommand extends Command
     /**
      * @var string
      */
-    protected $description = 'Checks if your .gitlab-ci.yml file is valid.';
+    protected $description = 'Checks if your .gitlab-ci.yml file is valid';
 
     /**
-     * @param \App\Services\GitLabApiService $service
+     * @param \App\Apis\Client $client
      * @return void
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle(GitLabApiService $service)
-    {
-        if (!$this->validate()) {
-            return;
-        }
-
-        $this->checkLint(
-            $service->lintCi(file_get_contents($this->argument('file')))
-        );
-    }
-
-    /**
-     * @return bool
-     */
-    protected function validate(): bool
+    public function handle(Client $client)
     {
         $file = $this->argument('file');
 
+        if (!$this->validate($file)) {
+            return;
+        }
+
+        $resource = (new Lint())->body(['content' => file_get_contents($file)]);
+
+        $this->checkLint($client->request($resource));
+    }
+
+    /**
+     * @param string $file
+     * @return bool
+     */
+    protected function validate(string $file): bool
+    {
         if (!is_file($file)) {
             $this->output->error("File does not exist at path $file");
 

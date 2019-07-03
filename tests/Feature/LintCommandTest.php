@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Services\GitLabApiService;
+use App\Apis\Client;
+use App\Apis\Standalone\Lint;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -17,7 +18,7 @@ class LintCommandTest extends TestCase
 
     public function testLintError()
     {
-        $this->mockService(['status' => 'invalid', 'errors' => ['foo', 'bar']]);
+        $this->mockClient(['status' => 'invalid', 'errors' => ['foo', 'bar']]);
 
         $this->artisan('lint', ['file' => base_path('README.md')])
             ->assertExitCode(0);
@@ -25,18 +26,20 @@ class LintCommandTest extends TestCase
 
     public function testLintSuccess()
     {
-        $this->mockService(['status' => 'valid']);
+        $this->mockClient(['status' => 'valid']);
 
         $this->artisan('lint', ['file' => base_path('README.md')])
             ->assertExitCode(0);
     }
 
-    protected function mockService(array $responses)
+    protected function mockClient(array $responses)
     {
-        $service = m::mock(GitLabApiService::class);
-        $service->shouldReceive('lintCi')
-            ->once()
-            ->andReturn((object) $responses);
-        $this->app->instance(GitLabApiService::class, $service);
+        $service = m::mock(Client::class);
+        $service->shouldReceive('request')
+            ->with(Lint::class)
+            ->andReturn((object) $responses)
+            ->once();
+
+        $this->app->instance(Client::class, $service);
     }
 }
