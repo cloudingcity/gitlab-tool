@@ -45,16 +45,6 @@ class GitLabApiService
     }
 
     /**
-     * @return object
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function fetchVersion(): object
-    {
-        return $this->request('GET', 'version');
-    }
-
-    /**
      * @param string      $search
      * @param string|null $group
      * @return array
