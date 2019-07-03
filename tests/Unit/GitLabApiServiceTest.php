@@ -13,23 +13,6 @@ class GitLabApiServiceTest extends TestCase
 {
     use UsesGuzzler;
 
-    public function testFetchMergeRequests()
-    {
-        $state = 'pikachu';
-
-        $this->guzzler->queueResponse(new Response(200, [], json_encode([1, 2, 3])));
-        $client = $this->guzzler->getClient(['base_uri' => 'http://foo']);
-
-        $service = new GitLabApiService($client);
-        $mergeRequests = $service->fetchMergeRequests($state);
-
-        $this->guzzler->expects($this->once())
-            ->get('http://foo/api/v4/merge_requests')
-            ->withQuery(['state' => $state]);
-
-        $this->assertSame($mergeRequests, [1, 2, 3]);
-    }
-
     public function testSearchProjects()
     {
         $this->guzzler->queueResponse(new Response(200, [], json_encode([])));

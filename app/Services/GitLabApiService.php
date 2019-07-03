@@ -23,17 +23,6 @@ class GitLabApiService
     }
 
     /**
-     * @param string $state
-     * @return array
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function fetchMergeRequests(string $state): array
-    {
-        return $this->request('GET', 'merge_requests', ['query' => ['state' => $state]]);
-    }
-
-    /**
      * @param string      $search
      * @param string|null $group
      * @return array
