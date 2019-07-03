@@ -2,7 +2,9 @@
 
 namespace App\Commands;
 
-use App\Services\GitLabApiService;
+use App\Apis\Client;
+use App\Apis\Group\Search as GroupSearch;
+use App\Apis\Standalone\Search;
 use Carbon\Carbon;
 use LaravelZero\Framework\Commands\Command;
 
@@ -21,14 +23,17 @@ class SearchProjectsCommand extends Command
     protected $description = 'Search projects';
 
     /**
-     * @param \App\Services\GitLabApiService $service
+     * @param \App\Apis\Client $client
      * @return void
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle(GitLabApiService $service)
+    public function handle(Client $client)
     {
-        $result = $service->searchProjects($this->argument('search'), $this->option('group'));
+        $resource = $this->option('group') ? new GroupSearch($this->option('group')) : new Search();
+        $resource->query([
+            'scope' => 'projects',
+            'search' => $this->argument('search'),
+        ]);
+        $result = $client->request($resource);
 
         if (!$result) {
             return $this->warn('No results');

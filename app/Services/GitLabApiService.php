@@ -23,20 +23,6 @@ class GitLabApiService
     }
 
     /**
-     * @param string      $search
-     * @param string|null $group
-     * @return array
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function searchProjects(string $search, string $group = null): array
-    {
-        $endpoint = $group ? sprintf('groups/%s/search', urlencode($group)) : 'search';
-
-        return $this->request('GET', $endpoint, ['query' => ['scope' => 'projects', 'search' => $search]]);
-    }
-
-    /**
      * @param string $method
      * @param string $endpoint
      * @param array  $options
