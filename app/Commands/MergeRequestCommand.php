@@ -2,7 +2,8 @@
 
 namespace App\Commands;
 
-use App\Services\GitLabApiService;
+use App\Apis\Client;
+use App\Apis\Standalone\MergeRequests;
 use LaravelZero\Framework\Commands\Command;
 
 class MergeRequestCommand extends Command
@@ -19,16 +20,14 @@ class MergeRequestCommand extends Command
     protected $description = 'List merge requests.';
 
     /**
-     * @param \App\Services\GitLabApiService $service
+     * @param \App\Apis\Client $client
      * @return void
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handle(GitLabApiService $service)
+    public function handle(Client $client)
     {
-        $this->render(
-            $service->fetchMergeRequests($this->option('state'))
-        );
+        $resource = (new MergeRequests())->query(['state' => $this->option('state')]);
+
+        $this->render($client->request($resource));
     }
 
     /**

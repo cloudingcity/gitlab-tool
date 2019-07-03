@@ -19,7 +19,6 @@
         "zendframework/zend-text": "^2.7"
     },
     "require-dev": {
-        "blastcloud/guzzler": "^1.5",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.5",
         "squizlabs/php_codesniffer": "^3.4"

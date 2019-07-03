@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Services\GitLabApiService;
+use App\Apis\Client;
+use App\Apis\Group\Search as GroupSearch;
+use App\Apis\Standalone\Search;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -11,12 +13,12 @@ class SearchProjectsCommandTest extends TestCase
 {
     public function testSearchNoResults()
     {
-        $service = m::mock(GitLabApiService::class);
-        $service->shouldReceive('searchProjects')
+        $client = m::mock(Client::class);
+        $client->shouldReceive('request')
             ->once()
-            ->with('foo', false)
+            ->with(Search::class)
             ->andReturn([]);
-        $this->app->instance(GitLabApiService::class, $service);
+        $this->app->instance(Client::class, $client);
 
         $this->artisan('search:projects', ['search' => 'foo'])
             ->expectsOutput('No results')
@@ -25,10 +27,10 @@ class SearchProjectsCommandTest extends TestCase
 
     public function testSearch()
     {
-        $service = m::mock(GitLabApiService::class);
-        $service->shouldReceive('searchProjects')
+        $client = m::mock(Client::class);
+        $client->shouldReceive('request')
             ->once()
-            ->with('foo', 'bar')
+            ->with(GroupSearch::class)
             ->andReturn([
                 (object) [
                     'path_with_namespace' => 'foo/bar',
@@ -37,7 +39,7 @@ class SearchProjectsCommandTest extends TestCase
                     'last_activity_at' => today()->toISOString(),
                 ]
             ]);
-        $this->app->instance(GitLabApiService::class, $service);
+        $this->app->instance(Client::class, $client);
 
         $this->artisan('search:projects', ['search' => 'foo', '--group' => 'bar'])
             ->assertExitCode(0);
