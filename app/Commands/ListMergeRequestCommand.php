@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use App\Api\Client;
-use App\Api\Standalone\MergeRequests;
+use App\Factories\MergeRequestsResourceFactory;
 use App\Helpers\Url;
 use Illuminate\Support\Carbon;
 use LaravelZero\Framework\Commands\Command;
@@ -14,7 +14,9 @@ class ListMergeRequestCommand extends Command
      * @var string
      */
     protected $signature = 'list:mrs
-                            {--state=opened : Can be opened, closed, locked, or merged}';
+                            {--state=opened : Can be opened, closed, locked, or merged}
+                            {--group= : The group to search in}
+                            {--project= : The project to search in}';
 
     /**
      * @var string
@@ -22,16 +24,19 @@ class ListMergeRequestCommand extends Command
     protected $description = 'List merge requests created by you';
 
     /**
-     * @param \App\Api\Client $client
+     * @param \App\Api\Client                             $client
+     * @param \App\Factories\MergeRequestsResourceFactory $factory
      * @return void
      */
-    public function handle(Client $client)
+    public function handle(Client $client, MergeRequestsResourceFactory $factory)
     {
-        $resource = (new MergeRequests())->query([
-            'state' => $this->option('state'),
-            'order_by' => 'updated_at',
-            'sort' => 'asc',
-        ]);
+        $resource = $factory->create($this->options())
+            ->query([
+                'state' => $this->option('state'),
+                'scope' => 'created_by_me',
+                'order_by' => 'updated_at',
+                'sort' => 'asc',
+            ]);
 
         $this->render($client->request($resource));
     }

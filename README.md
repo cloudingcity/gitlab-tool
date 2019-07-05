@@ -50,11 +50,11 @@ Checks if your .gitlab-ci.yml file is valid
 gitlab-tool lint <file>
 ```
 
-### mr
+### list:mrs
 
-List merge requests.
+List merge requests created by you
 ```
-gitlab-tool mr --state=[=STATE]
+gitlab-tool mr --state=[=STATE] --group[=GROUP] --project=[=PROJECT] 
 ```
 
 ### version
