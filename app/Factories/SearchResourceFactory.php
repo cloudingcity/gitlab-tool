@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Factories;
 
-use App\Apis\Group\Search as GroupSearch;
-use App\Apis\Project\Search as ProjectSearch;
-use App\Apis\Resource as ApiResource;
-use App\Apis\Standalone\Search;
+use App\Api\Group\Search as GroupSearch;
+use App\Api\Project\Search as ProjectSearch;
+use App\Api\Resource as ApiResource;
+use App\Api\Standalone\Search;
 
 class SearchResourceFactory implements ResourceFactory
 {
     /**
      * @param array $options
-     * @return \App\Apis\Resource
+     * @return \App\Api\Resource
      */
     public function create(array $options = []): ApiResource
     {

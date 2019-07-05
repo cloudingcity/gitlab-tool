@@ -2,8 +2,8 @@
 
 namespace App\Commands;
 
-use App\Apis\Client;
-use App\Apis\Standalone\Version;
+use App\Api\Client;
+use App\Api\Standalone\Version;
 use LaravelZero\Framework\Commands\Command;
 
 class VersionCommand extends Command
@@ -19,7 +19,7 @@ class VersionCommand extends Command
     protected $description = 'Show version information';
 
     /**
-     * @param \App\Apis\Client $client
+     * @param \App\Api\Client $client
      * @return void
      */
     public function handle(Client $client)

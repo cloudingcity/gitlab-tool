@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Factories;
 
-use App\Apis\Resource as ApiResource;
+use App\Api\Resource as ApiResource;
 
 interface ResourceFactory
 {
     /**
      * @param array $options
-     * @return \App\Apis\Resource
+     * @return \App\Api\Resource
      */
     public function create(array $options = []): ApiResource;
 }

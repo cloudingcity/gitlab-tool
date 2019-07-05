@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Factories;
 
-use App\Apis\Group\Search as GroupSearch;
-use App\Apis\Project\Search as ProjectSearch;
-use App\Apis\Standalone\Search;
+use App\Api\Group\Search as GroupSearch;
+use App\Api\Project\Search as ProjectSearch;
+use App\Api\Standalone\Search;
 use App\Factories\SearchResourceFactory;
 use Tests\TestCase;
 

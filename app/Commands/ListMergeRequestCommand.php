@@ -2,8 +2,8 @@
 
 namespace App\Commands;
 
-use App\Apis\Client;
-use App\Apis\Standalone\MergeRequests;
+use App\Api\Client;
+use App\Api\Standalone\MergeRequests;
 use App\Helpers\Url;
 use Illuminate\Support\Carbon;
 use LaravelZero\Framework\Commands\Command;
@@ -22,7 +22,7 @@ class ListMergeRequestCommand extends Command
     protected $description = 'List merge requests created by you';
 
     /**
-     * @param \App\Apis\Client $client
+     * @param \App\Api\Client $client
      * @return void
      */
     public function handle(Client $client)

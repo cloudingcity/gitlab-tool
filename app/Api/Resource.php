@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Apis;
+namespace App\Api;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;

@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use App\Apis\Client;
+use App\Api\Client;
 use App\Factories\SearchResourceFactory;
 use Carbon\Carbon;
 use LaravelZero\Framework\Commands\Command;
@@ -23,7 +23,7 @@ class SearchProjectsCommand extends Command
 
     /**
      * @param \App\Factories\SearchResourceFactory $factory
-     * @param \App\Apis\Client                     $client
+     * @param \App\Api\Client                      $client
      * @return void
      */
     public function handle(SearchResourceFactory $factory, Client $client)

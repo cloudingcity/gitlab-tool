@@ -2,8 +2,8 @@
 
 namespace App\Commands;
 
-use App\Apis\Client;
-use App\Apis\Standalone\Lint;
+use App\Api\Client;
+use App\Api\Standalone\Lint;
 use LaravelZero\Framework\Commands\Command;
 
 class LintCommand extends Command
@@ -20,7 +20,7 @@ class LintCommand extends Command
     protected $description = 'Checks if your .gitlab-ci.yml file is valid';
 
     /**
-     * @param \App\Apis\Client $client
+     * @param \App\Api\Client $client
      * @return void
      */
     public function handle(Client $client)

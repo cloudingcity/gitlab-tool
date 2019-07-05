@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Apis\Client;
-use App\Apis\Resource;
+use App\Api\Client;
+use App\Api\Resource;
 use App\Exceptions\ApiException;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;

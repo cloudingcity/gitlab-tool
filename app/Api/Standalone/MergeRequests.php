@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Apis\Standalone;
+namespace App\Api\Standalone;
 
-use App\Apis\Resource;
+use App\Api\Resource;
 
 class MergeRequests extends Resource
 {

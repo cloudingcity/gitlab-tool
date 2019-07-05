@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Apis\Client;
-use App\Apis\Standalone\Version;
+use App\Api\Client;
+use App\Api\Standalone\Version;
 use Mockery as m;
 use Tests\TestCase;
 

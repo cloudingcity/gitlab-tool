@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Apis\Standalone;
+namespace App\Api\Project;
 
-use App\Apis\Resource;
+use App\Api\Resource;
 
-class Version extends Resource
+class Search extends Resource
 {
     /**
      * @var string
@@ -16,5 +16,5 @@ class Version extends Resource
     /**
      * @var string
      */
-    protected $endpoint = 'version';
+    protected $endpoint = 'projects/?/search';
 }

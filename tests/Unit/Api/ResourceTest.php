@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Apis\Resource;
+use App\Api\Resource;
 use InvalidArgumentException;
 use Tests\TestCase;
 

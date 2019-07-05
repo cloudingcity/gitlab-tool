@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Apis\Project;
+namespace App\Api\Standalone;
 
-use App\Apis\Resource;
+use App\Api\Resource;
 
 class Search extends Resource
 {
@@ -16,5 +16,5 @@ class Search extends Resource
     /**
      * @var string
      */
-    protected $endpoint = 'projects/?/search';
+    protected $endpoint = 'search';
 }

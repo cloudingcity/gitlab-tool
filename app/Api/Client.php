@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Apis;
+namespace App\Api;
 
 use App\Exceptions\ApiException;
 use GuzzleHttp\Client as GuzzleClient;
@@ -25,7 +25,7 @@ class Client
     }
 
     /**
-     * @param \App\Apis\Resource $resource
+     * @param \App\Api\Resource $resource
      * @return mixed
      *
      * @throws \App\Exceptions\ApiException
@@ -40,7 +40,7 @@ class Client
     }
 
     /**
-     * @param \App\Apis\Resource $resource
+     * @param \App\Api\Resource $resource
      * @return mixed
      *
      * @throws \GuzzleHttp\Exception\GuzzleException

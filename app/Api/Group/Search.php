@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Apis\Group;
+namespace App\Api\Group;
 
-use App\Apis\Resource;
+use App\Api\Resource;
 
 class Search extends Resource
 {
