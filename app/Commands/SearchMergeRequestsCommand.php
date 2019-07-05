@@ -24,11 +24,11 @@ class SearchMergeRequestsCommand extends Command
     protected $description = 'Search merge requests';
 
     /**
-     * @param \App\Factories\SearchResourceFactory $factory
      * @param \App\Api\Client                      $client
+     * @param \App\Factories\SearchResourceFactory $factory
      * @return void
      */
-    public function handle(SearchResourceFactory $factory, Client $client)
+    public function handle(Client $client, SearchResourceFactory $factory)
     {
         $resource = $factory->create($this->options());
         $resource->query([

@@ -22,11 +22,11 @@ class SearchProjectsCommand extends Command
     protected $description = 'Search projects';
 
     /**
-     * @param \App\Factories\SearchResourceFactory $factory
      * @param \App\Api\Client                      $client
+     * @param \App\Factories\SearchResourceFactory $factory
      * @return void
      */
-    public function handle(SearchResourceFactory $factory, Client $client)
+    public function handle(Client $client, SearchResourceFactory $factory)
     {
         $resource = $factory->create($this->options());
         $resource->query([
