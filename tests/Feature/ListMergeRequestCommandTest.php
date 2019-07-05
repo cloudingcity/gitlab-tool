@@ -8,7 +8,7 @@ use App\Apis\Standalone\MergeRequests;
 use Mockery as m;
 use Tests\TestCase;
 
-class MergeRequestCommandTest extends TestCase
+class ListMergeRequestCommandTest extends TestCase
 {
     public function testMRCommand()
     {
@@ -17,11 +17,15 @@ class MergeRequestCommandTest extends TestCase
             ->once()
             ->with(MergeRequests::class)
             ->andReturn([
-                (object) ['web_url' => 'https://example.com/foo/bar', 'source_branch' => 'baz']
+                (object) [
+                    'web_url' => 'https://example.com/foo/bar',
+                    'source_branch' => 'baz',
+                    'updated_at' => today()->toISOString(),
+                ]
             ]);
         $this->app->instance(Client::class, $client);
 
-        $this->artisan('mr')
+        $this->artisan('list:mrs')
             ->assertExitCode(0);
     }
 }

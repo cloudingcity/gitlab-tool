@@ -4,20 +4,22 @@ namespace App\Commands;
 
 use App\Apis\Client;
 use App\Apis\Standalone\MergeRequests;
+use App\Helpers\Url;
+use Illuminate\Support\Carbon;
 use LaravelZero\Framework\Commands\Command;
 
-class MergeRequestCommand extends Command
+class ListMergeRequestCommand extends Command
 {
     /**
      * @var string
      */
-    protected $signature = 'mr
-                            {--state=opened : Can be opened, closed, locked, or merged.}';
+    protected $signature = 'list:mrs
+                            {--state=opened : Can be opened, closed, locked, or merged}';
 
     /**
      * @var string
      */
-    protected $description = 'List merge requests.';
+    protected $description = 'List merge requests created by you';
 
     /**
      * @param \App\Apis\Client $client
@@ -25,7 +27,11 @@ class MergeRequestCommand extends Command
      */
     public function handle(Client $client)
     {
-        $resource = (new MergeRequests())->query(['state' => $this->option('state')]);
+        $resource = (new MergeRequests())->query([
+            'state' => $this->option('state'),
+            'order_by' => 'updated_at',
+            'sort' => 'asc',
+        ]);
 
         $this->render($client->request($resource));
     }
@@ -37,13 +43,14 @@ class MergeRequestCommand extends Command
     protected function render(array $items)
     {
         foreach ($items as $item) {
-            [, , , $vendor, $repository] = explode('/', $item->web_url);
+            $updatedAt = Carbon::createFromTimeString($item->updated_at)->toDateTimeString();
 
             $this->table(
-                ['Project', $vendor . '/' . $repository],
+                ['Project', Url::parseProject($item->web_url)],
                 [
                     ['Branch', $item->source_branch],
                     ['Assignee', $item->assignee->name ?? null],
+                    ['Updated At', $updatedAt],
                     ['Url', $item->web_url],
                 ],
                 'box'
