@@ -3,8 +3,7 @@
 namespace App\Commands;
 
 use App\Apis\Client;
-use App\Apis\Group\Search as GroupSearch;
-use App\Apis\Standalone\Search;
+use App\Factories\SearchResourceFactory;
 use Carbon\Carbon;
 use LaravelZero\Framework\Commands\Command;
 
@@ -23,12 +22,13 @@ class SearchProjectsCommand extends Command
     protected $description = 'Search projects';
 
     /**
-     * @param \App\Apis\Client $client
+     * @param \App\Factories\SearchResourceFactory $factory
+     * @param \App\Apis\Client                     $client
      * @return void
      */
-    public function handle(Client $client)
+    public function handle(SearchResourceFactory $factory, Client $client)
     {
-        $resource = $this->option('group') ? new GroupSearch($this->option('group')) : new Search();
+        $resource = $factory->create($this->options());
         $resource->query([
             'scope' => 'projects',
             'search' => $this->argument('search'),

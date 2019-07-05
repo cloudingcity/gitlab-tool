@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Apis\Client;
-use App\Apis\Group\Search as GroupSearch;
 use App\Apis\Standalone\Search;
 use Mockery as m;
 use Tests\TestCase;
@@ -30,7 +29,7 @@ class SearchProjectsCommandTest extends TestCase
         $client = m::mock(Client::class);
         $client->shouldReceive('request')
             ->once()
-            ->with(GroupSearch::class)
+            ->with(Search::class)
             ->andReturn([
                 (object) [
                     'path_with_namespace' => 'foo/bar',
@@ -41,7 +40,7 @@ class SearchProjectsCommandTest extends TestCase
             ]);
         $this->app->instance(Client::class, $client);
 
-        $this->artisan('search:projects', ['search' => 'foo', '--group' => 'bar'])
+        $this->artisan('search:projects', ['search' => 'foo'])
             ->assertExitCode(0);
     }
 }
