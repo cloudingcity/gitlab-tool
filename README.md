@@ -71,3 +71,9 @@ Search projects
 gitlab-tool search:projects <search> --group[=GROUP]
 ```
 
+### search:mrs
+
+Search merge requests
+```
+gitlab-tool search:projects <search> --group[=GROUP] --project=[=PROJECT]
+```
