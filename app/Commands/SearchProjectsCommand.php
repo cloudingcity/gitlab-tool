@@ -28,18 +28,18 @@ class SearchProjectsCommand extends Command
      */
     public function handle(Client $client, SearchResourceFactory $factory)
     {
-        $resource = $factory->create($this->options());
-        $resource->query([
-            'scope' => 'projects',
-            'search' => $this->argument('search'),
-        ]);
-        $result = $client->request($resource);
+        $resource = $factory->create($this->options())
+            ->query([
+                'scope' => 'projects',
+                'search' => $this->argument('search'),
+            ]);
+        $responses = $client->request($resource);
 
-        if (!$result) {
+        if (!$responses) {
             return $this->warn('No results');
         }
 
-        $this->render($result);
+        $this->render($responses);
     }
 
     /**

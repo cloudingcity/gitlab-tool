@@ -30,11 +30,11 @@ class SearchMergeRequestsCommand extends Command
      */
     public function handle(Client $client, SearchResourceFactory $factory)
     {
-        $resource = $factory->create($this->options());
-        $resource->query([
-            'scope' => 'merge_requests',
-            'search' => $this->argument('search'),
-        ]);
+        $resource = $factory->create($this->options())
+            ->query([
+                'scope' => 'merge_requests',
+                'search' => $this->argument('search'),
+            ]);
         $responses = $client->request($resource);
 
         if (!$responses) {
