@@ -24,9 +24,8 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ClientException) {
             $contents = $exception->getResponse()->getBody()->getContents();
             $message = json_decode($contents)->message;
-            echo "\033[01;31m $message \033[0m";
 
-            return;
+            exit("\033[01;31m $message \033[0m". PHP_EOL);
         }
 
         parent::report($exception);
