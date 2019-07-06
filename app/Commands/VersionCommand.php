@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use App\Api\Client;
 use App\Api\Standalone\Version;
 use LaravelZero\Framework\Commands\Command;
 
@@ -19,12 +18,11 @@ class VersionCommand extends Command
     protected $description = 'Show version information';
 
     /**
-     * @param \App\Api\Client $client
      * @return void
      */
-    public function handle(Client $client)
+    public function handle()
     {
-        $version = $client->request(new Version())->version;
+        $version = app(Version::class)->execute()->version;
 
         $this->table(
             ['Uri', config('gitlab.uri')],

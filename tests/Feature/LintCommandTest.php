@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Api\Client;
 use App\Api\Standalone\Lint;
 use Mockery as m;
 use Tests\TestCase;
@@ -18,28 +17,29 @@ class LintCommandTest extends TestCase
 
     public function testLintError()
     {
-        $this->mockClient(['status' => 'invalid', 'errors' => ['foo', 'bar']]);
+        $file = base_path('README.md');
 
-        $this->artisan('lint', ['file' => base_path('README.md')])
+        $lint = m::mock(Lint::class);
+        $lint->shouldReceive('execute')
+            ->with(['content' => file_get_contents($file)])
+            ->andReturn((object) ['status' => 'invalid', 'errors' => ['foo', 'bar']]);
+        $this->app->instance(Lint::class, $lint);
+
+        $this->artisan('lint', ['file' => $file])
             ->assertExitCode(0);
     }
 
     public function testLintSuccess()
     {
-        $this->mockClient(['status' => 'valid']);
+        $file = base_path('README.md');
 
-        $this->artisan('lint', ['file' => base_path('README.md')])
+        $lint = m::mock(Lint::class);
+        $lint->shouldReceive('execute')
+            ->with(['content' => file_get_contents($file)])
+            ->andReturn((object) ['status' => 'valid']);
+        $this->app->instance(Lint::class, $lint);
+
+        $this->artisan('lint', ['file' => $file])
             ->assertExitCode(0);
-    }
-
-    protected function mockClient(array $responses)
-    {
-        $service = m::mock(Client::class);
-        $service->shouldReceive('request')
-            ->with(Lint::class)
-            ->andReturn((object) $responses)
-            ->once();
-
-        $this->app->instance(Client::class, $service);
     }
 }

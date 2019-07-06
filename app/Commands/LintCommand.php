@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use App\Api\Client;
 use App\Api\Standalone\Lint;
 use LaravelZero\Framework\Commands\Command;
 
@@ -20,10 +19,9 @@ class LintCommand extends Command
     protected $description = 'Checks if your .gitlab-ci.yml file is valid';
 
     /**
-     * @param \App\Api\Client $client
      * @return void
      */
-    public function handle(Client $client)
+    public function handle()
     {
         $file = $this->argument('file');
 
@@ -31,9 +29,9 @@ class LintCommand extends Command
             return;
         }
 
-        $resource = (new Lint())->body(['content' => file_get_contents($file)]);
+        $contents = app(Lint::class)->execute(['content' => file_get_contents($file)]);
 
-        $this->checkLint($client->request($resource));
+        $this->checkLint($contents);
     }
 
     /**

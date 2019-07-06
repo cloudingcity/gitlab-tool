@@ -18,11 +18,11 @@ class SearchResourceFactory implements ResourceFactory
     public function create(array $options = []): ApiResource
     {
         if (isset($options['project'])) {
-            return new ProjectSearch($options['project']);
+            return new ProjectSearch([$options['project']]);
         }
 
         if (isset($options['group'])) {
-            return new GroupSearch($options['group']);
+            return new GroupSearch([$options['group']]);
         }
 
         return new Search();

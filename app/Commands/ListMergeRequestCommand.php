@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use App\Api\Client;
 use App\Factories\MergeRequestsResourceFactory;
 use App\Helpers\Url;
 use Illuminate\Support\Carbon;
@@ -24,21 +23,20 @@ class ListMergeRequestCommand extends Command
     protected $description = 'List merge requests created by you';
 
     /**
-     * @param \App\Api\Client                             $client
      * @param \App\Factories\MergeRequestsResourceFactory $factory
      * @return void
      */
-    public function handle(Client $client, MergeRequestsResourceFactory $factory)
+    public function handle(MergeRequestsResourceFactory $factory)
     {
-        $resource = $factory->create($this->options())
-            ->query([
+        $contents = $factory->create($this->options())
+            ->execute([
                 'state' => $this->option('state'),
                 'scope' => 'created_by_me',
                 'order_by' => 'updated_at',
                 'sort' => 'asc',
             ]);
 
-        $this->render($client->request($resource));
+        $this->render($contents);
     }
 
     /**

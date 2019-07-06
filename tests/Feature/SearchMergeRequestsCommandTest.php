@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Api\Client;
 use App\Api\Standalone\Search;
+use App\Factories\SearchResourceFactory;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -12,12 +12,19 @@ class SearchMergeRequestsCommandTest extends TestCase
 {
     public function testSearchNoResults()
     {
-        $client = m::mock(Client::class);
-        $client->shouldReceive('request')
-            ->once()
-            ->with(Search::class)
+        $search = m::mock(Search::class);
+        $search->shouldReceive('execute')
+            ->with([
+                'scope' => 'merge_requests',
+                'search' => 'foo',
+            ])
             ->andReturn([]);
-        $this->app->instance(Client::class, $client);
+
+        $factory = m::mock(SearchResourceFactory::class);
+        $factory->shouldReceive('create')
+            ->andReturn($search);
+
+        $this->app->instance(SearchResourceFactory::class, $factory);
 
         $this->artisan('search:mrs', ['search' => 'foo'])
             ->expectsOutput('No results')
@@ -26,10 +33,12 @@ class SearchMergeRequestsCommandTest extends TestCase
 
     public function testSearch()
     {
-        $client = m::mock(Client::class);
-        $client->shouldReceive('request')
-            ->once()
-            ->with(Search::class)
+        $search = m::mock(Search::class);
+        $search->shouldReceive('execute')
+            ->with([
+                'scope' => 'merge_requests',
+                'search' => 'foo',
+            ])
             ->andReturn([
                 (object) [
                     'source_branch' => 'foo-bar',
@@ -39,7 +48,12 @@ class SearchMergeRequestsCommandTest extends TestCase
                     'merged_at' => today()->toISOString(),
                 ]
             ]);
-        $this->app->instance(Client::class, $client);
+
+        $factory = m::mock(SearchResourceFactory::class);
+        $factory->shouldReceive('create')
+            ->andReturn($search);
+
+        $this->app->instance(SearchResourceFactory::class, $factory);
 
         $this->artisan('search:mrs', ['search' => 'foo'])
             ->assertExitCode(0);

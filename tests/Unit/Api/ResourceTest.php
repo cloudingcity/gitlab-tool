@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Api\Resource;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
+use Mockery as m;
 use Tests\TestCase;
 
 class ResourceTest extends TestCase
@@ -33,27 +36,54 @@ class ResourceTest extends TestCase
 
     public function testEndpointParameter()
     {
-        $resource = new class ('pikachu') extends Resource
+        $resource = new class (['pikachu']) extends Resource
         {
             protected $method = 'GET';
             protected $endpoint = 'foo/?/bar';
+
+            public function getEndpoint()
+            {
+                return $this->endpoint;
+            }
         };
 
-        $this->assertEquals('foo/pikachu/bar', $resource->all()['endpoint']);
+        $this->assertEquals('foo/pikachu/bar', $resource->getEndpoint());
     }
 
     public function testEndpointParameterWithSlug()
     {
-        $resource = new class ('one/two') extends Resource
+        $resource = new class (['one/two']) extends Resource
         {
             protected $method = 'GET';
             protected $endpoint = 'foo/?/bar';
+
+            public function getEndpoint()
+            {
+                return $this->endpoint;
+            }
         };
 
-        $this->assertEquals('foo/one%2Ftwo/bar', $resource->all()['endpoint']);
+        $this->assertEquals('foo/one%2Ftwo/bar', $resource->getEndpoint());
     }
 
-    public function testQuery()
+    public function testExecute()
+    {
+        $resource = new class extends Resource
+        {
+            protected $method = 'POST';
+            protected $endpoint = 'foo/bar';
+        };
+
+        $client = m::mock(Client::class);
+        $client->shouldReceive('request')
+            ->with('POST', 'api/v4/foo/bar', [])
+            ->andReturn(new Response());
+        $this->app->instance(Client::class, $client);
+
+        $resource->execute();
+    }
+
+    public function testExecuteGetMethod()
     {
         $resource = new class extends Resource
         {
@@ -61,38 +91,43 @@ class ResourceTest extends TestCase
             protected $endpoint = 'foo/bar';
         };
 
-        $resource->query(['foo' => 'bar']);
+        $client = m::mock(Client::class);
+        $client->shouldReceive('request')
+            ->with('GET', 'api/v4/foo/bar', ['query' => ['foo' => 'bar']])
+            ->andReturn(new Response());
+        $this->app->instance(Client::class, $client);
 
-        $this->assertEquals(['foo' => 'bar'], $resource->all()['query']);
+        $resource->execute(['foo' => 'bar']);
     }
 
-    public function testBody()
+    public function testExecutePostMethod()
     {
         $resource = new class extends Resource
         {
-            protected $method = 'GET';
+            protected $method = 'POST';
             protected $endpoint = 'foo/bar';
         };
 
-        $resource->body(['foo' => 'bar']);
+        $client = m::mock(Client::class);
+        $client->shouldReceive('request')
+            ->with('POST', 'api/v4/foo/bar', ['form_params' => ['foo' => 'bar']])
+            ->andReturn(new Response());
+        $this->app->instance(Client::class, $client);
 
-        $this->assertEquals(['foo' => 'bar'], $resource->all()['body']);
+        $resource->execute(['foo' => 'bar']);
     }
 
-    public function testAll()
+    public function testExecuteGetOptionsException()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid method: SECRET');
+
         $resource = new class extends Resource
         {
-            protected $method = 'GET';
+            protected $method = 'SECRET';
             protected $endpoint = 'foo/bar';
         };
 
-        $expected = [
-            'method' => 'GET',
-            'endpoint' => 'foo/bar',
-            'query' => [],
-            'body' => [],
-        ];
-        $this->assertEquals($expected, $resource->all());
+        $resource->execute(['foo' => 'bar']);
     }
 }

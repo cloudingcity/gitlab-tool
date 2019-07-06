@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Api\Client;
 use App\Api\Standalone\Search;
+use App\Factories\SearchResourceFactory;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -12,12 +12,19 @@ class SearchProjectsCommandTest extends TestCase
 {
     public function testSearchNoResults()
     {
-        $client = m::mock(Client::class);
-        $client->shouldReceive('request')
-            ->once()
-            ->with(Search::class)
+        $search = m::mock(Search::class);
+        $search->shouldReceive('execute')
+            ->with([
+                'scope' => 'projects',
+                'search' => 'foo',
+            ])
             ->andReturn([]);
-        $this->app->instance(Client::class, $client);
+
+        $factory = m::mock(SearchResourceFactory::class);
+        $factory->shouldReceive('create')
+            ->andReturn($search);
+
+        $this->app->instance(SearchResourceFactory::class, $factory);
 
         $this->artisan('search:projects', ['search' => 'foo'])
             ->expectsOutput('No results')
@@ -26,10 +33,13 @@ class SearchProjectsCommandTest extends TestCase
 
     public function testSearch()
     {
-        $client = m::mock(Client::class);
-        $client->shouldReceive('request')
-            ->once()
-            ->with(Search::class)
+
+        $search = m::mock(Search::class);
+        $search->shouldReceive('execute')
+            ->with([
+                'scope' => 'projects',
+                'search' => 'foo',
+            ])
             ->andReturn([
                 (object) [
                     'path_with_namespace' => 'foo/bar',
@@ -38,7 +48,12 @@ class SearchProjectsCommandTest extends TestCase
                     'last_activity_at' => today()->toISOString(),
                 ]
             ]);
-        $this->app->instance(Client::class, $client);
+
+        $factory = m::mock(SearchResourceFactory::class);
+        $factory->shouldReceive('create')
+            ->andReturn($search);
+
+        $this->app->instance(SearchResourceFactory::class, $factory);
 
         $this->artisan('search:projects', ['search' => 'foo'])
             ->assertExitCode(0);

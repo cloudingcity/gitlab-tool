@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use App\Api\Client;
 use App\Factories\SearchResourceFactory;
 use App\Helpers\Url;
 use Carbon\Carbon;
@@ -24,24 +23,22 @@ class SearchMergeRequestsCommand extends Command
     protected $description = 'Search merge requests';
 
     /**
-     * @param \App\Api\Client                      $client
      * @param \App\Factories\SearchResourceFactory $factory
      * @return void
      */
-    public function handle(Client $client, SearchResourceFactory $factory)
+    public function handle(SearchResourceFactory $factory)
     {
-        $resource = $factory->create($this->options())
-            ->query([
+        $contents = $factory->create($this->options())
+            ->execute([
                 'scope' => 'merge_requests',
                 'search' => $this->argument('search'),
             ]);
-        $responses = $client->request($resource);
 
-        if (!$responses) {
+        if (!$contents) {
             return $this->warn('No results');
         }
 
-        $this->render($responses);
+        $this->render($contents);
     }
 
     /**

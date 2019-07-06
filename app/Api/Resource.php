@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Container\Container;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
@@ -20,19 +22,10 @@ abstract class Resource
     protected $endpoint;
 
     /**
-     * @var array
+     * @param array $parameters
+     * @return void
      */
-    protected $query = [];
-
-    /**
-     * @var array
-     */
-    protected $body = [];
-
-    /**
-     * @param string[] $parameters
-     */
-    public function __construct(string ...$parameters)
+    public function __construct(array $parameters = [])
     {
         if (!isset($this->method)) {
             throw new InvalidArgumentException('Method is not set.');
@@ -47,6 +40,7 @@ abstract class Resource
 
     /**
      * @param array $parameters
+     * @return void
      */
     protected function setupEndpoint(array $parameters)
     {
@@ -55,44 +49,57 @@ abstract class Resource
         }
 
         $parameters = array_map(function (string $parameter) {
-            return urlencode($parameter);
+            return (Str::contains($parameter, '/')) ? urlencode($parameter) : $parameter;
         }, $parameters);
 
         $this->endpoint = Str::replaceArray('?', $parameters, $this->endpoint);
     }
 
-    /**
-     * @param array $query
-     * @return $this
-     */
-    public function query(array $query): self
+    public function execute(array $params = [])
     {
-        $this->query = $query;
+        $response = $this->getClient()->request(
+            $this->method,
+            $this->getUri(),
+            $this->getOptions($params)
+        );
 
-        return $this;
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
-     * @param array $body
-     * @return $this
+     * @return \GuzzleHttp\Client
      */
-    public function body(array $body): self
+    protected function getClient(): GuzzleClient
     {
-        $this->body = $body;
-
-        return $this;
+        return Container::getInstance()->make(GuzzleClient::class);
     }
 
     /**
+     * @return string
+     */
+    protected function getUri(): string
+    {
+        return 'api/v4/' . $this->endpoint;
+    }
+
+    /**
+     * @param array $params
      * @return array
      */
-    public function all(): array
+    protected function getOptions(array $params): array
     {
-        return [
-            'method' => $this->method,
-            'endpoint' => $this->endpoint,
-            'query' => $this->query,
-            'body' => $this->body,
-        ];
+        if (empty($params)) {
+            return [];
+        }
+
+        if ($this->method === 'GET') {
+            return ['query' => $params];
+        }
+
+        if ($this->method === 'POST') {
+            return ['form_params' => $params];
+        }
+
+        throw new InvalidArgumentException('Invalid method: ' . $this->method);
     }
 }

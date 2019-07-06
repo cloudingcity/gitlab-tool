@@ -18,11 +18,11 @@ class MergeRequestsResourceFactory implements ResourceFactory
     public function create(array $options = []): ApiResource
     {
         if (isset($options['project'])) {
-            return new ProjectMergeRequests($options['project']);
+            return new ProjectMergeRequests([$options['project']]);
         }
 
         if (isset($options['group'])) {
-            return new GroupMergeRequests($options['group']);
+            return new GroupMergeRequests([$options['group']]);
         }
 
         return new MergeRequests();
