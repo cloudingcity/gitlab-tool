@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Api\Resource;
+use App\Api\Response as ApiResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
@@ -80,7 +81,9 @@ class ResourceTest extends TestCase
             ->andReturn(new Response());
         $this->app->instance(Client::class, $client);
 
-        $resource->execute();
+        $response = $resource->execute();
+
+        $this->assertInstanceOf(ApiResponse::class, $response);
     }
 
     public function testExecuteGetMethod()

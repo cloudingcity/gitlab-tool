@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Api\Response;
 use App\Api\Standalone\Search;
 use App\Factories\SearchResourceFactory;
 use Mockery as m;
@@ -12,13 +13,17 @@ class SearchProjectsCommandTest extends TestCase
 {
     public function testSearchNoResults()
     {
+        $response = m::mock(Response::class);
+        $response->shouldReceive('getData')
+            ->andReturn([]);
+
         $search = m::mock(Search::class);
         $search->shouldReceive('execute')
             ->with([
                 'scope' => 'projects',
                 'search' => 'foo',
             ])
-            ->andReturn([]);
+            ->andReturn($response);
 
         $factory = m::mock(SearchResourceFactory::class);
         $factory->shouldReceive('create')
@@ -33,6 +38,16 @@ class SearchProjectsCommandTest extends TestCase
 
     public function testSearch()
     {
+        $response = m::mock(Response::class);
+        $response->shouldReceive('getData')
+            ->andReturn([
+                [
+                    'path_with_namespace' => 'foo/bar',
+                    'description' => 'foo',
+                    'web_url' => 'https://example.com/foo/bar',
+                    'last_activity_at' => today()->toISOString(),
+                ]
+            ]);
 
         $search = m::mock(Search::class);
         $search->shouldReceive('execute')
@@ -40,14 +55,7 @@ class SearchProjectsCommandTest extends TestCase
                 'scope' => 'projects',
                 'search' => 'foo',
             ])
-            ->andReturn([
-                (object) [
-                    'path_with_namespace' => 'foo/bar',
-                    'description' => 'foo',
-                    'web_url' => 'https://example.com/foo/bar',
-                    'last_activity_at' => today()->toISOString(),
-                ]
-            ]);
+            ->andReturn($response);
 
         $factory = m::mock(SearchResourceFactory::class);
         $factory->shouldReceive('create')

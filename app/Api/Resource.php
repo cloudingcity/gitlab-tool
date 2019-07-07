@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use App\Api\Response as ApiResponse;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Container\Container;
 use Illuminate\Support\Str;
@@ -55,7 +56,13 @@ abstract class Resource
         $this->endpoint = Str::replaceArray('?', $parameters, $this->endpoint);
     }
 
-    public function execute(array $params = [])
+    /**
+     * @param array $params
+     * @return \App\Api\Response
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function execute(array $params = []): ApiResponse
     {
         $response = $this->getClient()->request(
             $this->method,
@@ -63,7 +70,7 @@ abstract class Resource
             $this->getOptions($params)
         );
 
-        return json_decode($response->getBody()->getContents());
+        return new ApiResponse($response);
     }
 
     /**

@@ -22,7 +22,8 @@ class VersionCommand extends Command
      */
     public function handle()
     {
-        $version = app(Version::class)->execute()->version;
+        $response = app(Version::class)->execute();
+        $version = $response->getData()['version'];
 
         $this->table(
             ['Uri', config('gitlab.uri')],

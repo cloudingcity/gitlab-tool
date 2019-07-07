@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Api\Response;
 use App\Factories\MergeRequestsResourceFactory;
 use App\Helpers\Url;
 use Illuminate\Support\Carbon;
@@ -28,7 +29,7 @@ class ListMergeRequestCommand extends Command
      */
     public function handle(MergeRequestsResourceFactory $factory)
     {
-        $contents = $factory->create($this->options())
+        $response = $factory->create($this->options())
             ->execute([
                 'state' => $this->option('state'),
                 'scope' => 'created_by_me',
@@ -36,25 +37,31 @@ class ListMergeRequestCommand extends Command
                 'sort' => 'asc',
             ]);
 
-        $this->render($contents);
+        $this->render($response);
     }
 
     /**
-     * @param array $items
+     * @param \App\Api\Response $response
      * @return void
      */
-    protected function render(array $items)
+    protected function render(Response $response)
     {
-        foreach ($items as $item) {
-            $updatedAt = Carbon::createFromTimeString($item->updated_at)->toDateTimeString();
+        $this->output->listing([
+            'Page: ' . $response->getPage() . '/' . $response->getTotalPage(),
+            'Per Page: ' . $response->getPerPage(),
+            'Total: ' . $response->getTotal(),
+        ]);
+
+        foreach ($response->getData() as $item) {
+            $updatedAt = Carbon::createFromTimeString($item['updated_at'])->toDateTimeString();
 
             $this->table(
-                ['Project', Url::parseProject($item->web_url)],
+                ['Project', Url::parseProject($item['web_url'])],
                 [
-                    ['Branch', $item->source_branch],
-                    ['Assignee', $item->assignee->name ?? null],
+                    ['Branch', $item['source_branch']],
+                    ['Assignee', $item['assignee']['name'] ?? null],
                     ['Updated At', $updatedAt],
-                    ['Url', $item->web_url],
+                    ['Url', $item['web_url']],
                 ],
                 'box'
             );

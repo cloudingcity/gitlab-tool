@@ -29,7 +29,7 @@ class LintCommand extends Command
             return;
         }
 
-        $contents = app(Lint::class)->execute(['content' => file_get_contents($file)]);
+        $contents = app(Lint::class)->execute(['content' => file_get_contents($file)])->getData();
 
         $this->checkLint($contents);
     }
@@ -50,13 +50,13 @@ class LintCommand extends Command
     }
 
     /**
-     * @param object $response
+     * @param array $contents
      * @return void
      */
-    protected function checkLint(object $response)
+    protected function checkLint(array $contents)
     {
-        if ($response->status === 'invalid') {
-            foreach ($response->errors as $error) {
+        if ($contents['status'] === 'invalid') {
+            foreach ($contents['errors'] as $error) {
                 $this->output->error($error);
             }
 

@@ -32,7 +32,7 @@ class SearchMergeRequestsCommand extends Command
             ->execute([
                 'scope' => 'merge_requests',
                 'search' => $this->argument('search'),
-            ]);
+            ])->getData();
 
         if (!$contents) {
             return $this->warn('No results');
@@ -53,30 +53,30 @@ class SearchMergeRequestsCommand extends Command
     }
 
     /**
-     * @param object $item
+     * @param array $item
      * @return array
      */
-    protected function getTableHeaders(object $item): array
+    protected function getTableHeaders(array $item): array
     {
-        return ['Project', Url::parseProject($item->web_url)];
+        return ['Project', Url::parseProject($item['web_url'])];
     }
 
     /**
-     * @param object $item
+     * @param array $item
      * @return array
      */
-    protected function getTableRows(object $item): array
+    protected function getTableRows(array $item): array
     {
-        $timeState = $item->merged_at ?
-            ['Merged At', Carbon::createFromTimeString($item->merged_at)->toDateTimeString()] :
-            ['Updated At', Carbon::createFromTimeString($item->updated_at)->toDateTimeString()];
+        $timeState = $item['merged_at'] ?
+            ['Merged At', Carbon::createFromTimeString($item['merged_at'])->toDateTimeString()] :
+            ['Updated At', Carbon::createFromTimeString($item['updated_at'])->toDateTimeString()];
 
         return [
-            ['Branch', $item->source_branch],
-            ['Author', $item->author->name],
-            ['State', $item->state],
+            ['Branch', $item['source_branch']],
+            ['Author', $item['author']['name']],
+            ['State', $item['state']],
             $timeState,
-            ['Url', $item->web_url],
+            ['Url', $item['web_url']],
         ];
     }
 }
