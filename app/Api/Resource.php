@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Api;
 
 use App\Api\Response as ApiResponse;
+use Generator;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Container\Container;
 use Illuminate\Support\Str;
@@ -71,6 +72,26 @@ abstract class Resource
         );
 
         return new ApiResponse($response);
+    }
+
+    /**
+     * @param array $params
+     * @return \Generator
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getGenerator(array $params = []): Generator
+    {
+        $client = $this->getClient();
+        $options = $this->getOptions($params);
+        $options['query']['page'] = 1;
+
+        while ($options['query']['page']) {
+            $response = new ApiResponse($client->request($this->method, $this->getUri(), $options));
+            $options['query']['page'] = $response->getNextPage();
+
+            yield $response;
+        }
     }
 
     /**
