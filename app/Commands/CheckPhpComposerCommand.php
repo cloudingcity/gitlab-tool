@@ -14,7 +14,7 @@ class CheckPhpComposerCommand extends Command
      */
     protected $signature = 'check:php:composer
                             {group : The group to check in}
-                            {package : The compsoer package to check in}';
+                            {package : The composer package to check in}';
 
     /**
      * @var string
@@ -76,10 +76,10 @@ class CheckPhpComposerCommand extends Command
                     'ref' => $project['default_branch'],
                 ])->getData();
 
-                if (isset($content['require'][$this->argument('search')])) {
+                if (isset($content['require'][$this->argument('package')])) {
                     $results[] = [
                         'name' => $project['name'],
-                        'version' => $content['require'][$this->argument('search')],
+                        'version' => $content['require'][$this->argument('package')],
                         'default_branch' => $project['default_branch'],
                         'web_url' => $project['web_url'],
                     ];
