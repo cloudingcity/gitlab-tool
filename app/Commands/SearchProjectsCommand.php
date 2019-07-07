@@ -47,12 +47,14 @@ class SearchProjectsCommand extends Command
     protected function render(array $items)
     {
         foreach ($items as $item) {
+            $description = $item['description'] ?
+                ['Description', preg_replace('/\s+/', ' ', $item['description'])] : [];
             $updatedAt = Carbon::createFromTimeString($item['last_activity_at'])->toDateTimeString();
 
             $this->table(
                 ['Project', $item['path_with_namespace']],
                 [
-                    $item['description'] ? ['Description', $item['description']] : [],
+                    $description,
                     ['Url', $item['web_url']],
                     ['Updated At', $updatedAt],
                 ],
