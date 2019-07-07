@@ -43,6 +43,13 @@ Update gitlab-tool to latest version
 gitlab-tool self-update
 ```
 
+### check:php:composer
+
+Check composer.json which project required
+```
+gitlab-tool check:php:composer <group> <package>
+```
+
 ### lint
 
 Checks if your .gitlab-ci.yml file is valid
